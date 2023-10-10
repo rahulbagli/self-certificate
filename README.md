@@ -78,21 +78,21 @@ The following is the steps to create Key,Certificate and CSR:
 Steps to generate a self-signed root certificate. We will use it for signing client and server certificates later in the story.
 1.	This command generates a private key for the root certificate.
        
-    openssl genrsa -out rootCA.key 2048
+    > openssl genrsa -out rootCA.key 2048
 2.	Request a certificate from openssl using the key generated in the previous step
       
-    openssl req -x509 -new -key rootCA.key -sha256 -days 365 -out rootCA.pem
+    > openssl req -x509 -new -key rootCA.key -sha256 -days 365 -out rootCA.pem
       
 ### Signing Server Certificate
 3.	Let’s create a private key and then a CSR for our server certificate.
       
-    openssl genrsa -out server.key 2048
+    > openssl genrsa -out server.key 2048
 4.	Now request a CSR with the key as input key:
       
-    openssl req -new -sha256 -key server.key -out server.csr
+    > openssl req -new -sha256 -key server.key -out server.csr
 5.	let’s sign the server certificate with the given CSR.
 
-    openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out server.pem -days 365 -sha256
+    > openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out server.pem -days 365 -sha256
 
 ### Signing Client Certificate
 As mentioned in the background, mutual TLS is based on both parties authenticating each other. If it were to be one-way TLS, we would not need the client certificate, because server would not request it. In this case however, we’d like the client to present its certificate and we’d like the server to authenticate it.
@@ -111,6 +111,6 @@ As mentioned in the background, mutual TLS is based on both parties authenticati
 ### Create keystore from server certificate
 9.	Navigate to the directory where you have the certificates and run the following command to create a key store from server certificate and its private key.
       
-    openssl pkcs12 -export -in server.pem -out keystore.p12 -name server -inkey server.key
+    > openssl pkcs12 -export -in server.pem -out keystore.p12 -name server -inkey server.key
      
-    keytool -import -file rootCA.pem -alias rootCA -keystore truststore.p12 -storepass abc123
+    > keytool -import -file rootCA.pem -alias rootCA -keystore truststore.p12 -storepass abc123
