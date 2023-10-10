@@ -95,15 +95,17 @@ Steps to generate a self-signed root certificate. We will use it for signing cli
     > openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out server.pem -days 365 -sha256
 ### Signing Client Certificate
 As mentioned in the background, mutual TLS is based on both parties authenticating each other. If it were to be one-way TLS, we would not need the client certificate, because server would not request it. In this case however, we’d like the client to present its certificate and we’d like the server to authenticate it.
-6.	Let’s create client certificates so we can use them to call the API.
-      
-    > openssl genrsa -out client.key 2048
+
+6.  Let’s create client certificates so we can use them to call the API.
+
+         > openssl genrsa -out client.key 2048
+
 7.	Then create a CSR for the client in the same way
       
-    > openssl req -new -sha256 -key client.key -out client.csr
+          > openssl req -new -sha256 -key client.key -out client.csr
 8.	Then we sign the client certificate also in the same way
       
-    > openssl x509 -req -in client.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out client.pem -days 365 -sha256
+          > openssl x509 -req -in client.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out client.pem -days 365 -sha256
 
 ### Create keystore from server certificate
 9.	Navigate to the directory where you have the certificates and run the following command to create a key store from server certificate and its private key.
