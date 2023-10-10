@@ -75,6 +75,7 @@ The following is the steps to create Key,Certificate and CSR:
 
 
 ## Generating Root Certificates
+
 Steps to generate a self-signed root certificate. We will use it for signing client and server certificates later in the story.
 1.	This command generates a private key for the root certificate.
       
@@ -84,6 +85,7 @@ Steps to generate a self-signed root certificate. We will use it for signing cli
     > openssl req -x509 -new -key rootCA.key -sha256 -days 365 -out rootCA.pem
       
 ### Signing Server Certificate
+
 3.	Let’s create a private key and then a CSR for our server certificate.
       
     > openssl genrsa -out server.key 2048
@@ -94,6 +96,7 @@ Steps to generate a self-signed root certificate. We will use it for signing cli
       
     > openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out server.pem -days 365 -sha256
 ### Signing Client Certificate
+
 As mentioned in the background, mutual TLS is based on both parties authenticating each other. If it were to be one-way TLS, we would not need the client certificate, because server would not request it. In this case however, we’d like the client to present its certificate and we’d like the server to authenticate it.
 
 6.  Let’s create client certificates so we can use them to call the API.
@@ -108,6 +111,7 @@ As mentioned in the background, mutual TLS is based on both parties authenticati
           > openssl x509 -req -in client.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out client.pem -days 365 -sha256
 
 ### Create keystore from server certificate
+
 9.	Navigate to the directory where you have the certificates and run the following command to create a key store from server certificate and its private key.
       
     > openssl pkcs12 -export -in server.pem -out keystore.p12 -name server -inkey server.key
