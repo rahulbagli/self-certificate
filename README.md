@@ -72,6 +72,7 @@ The following is the steps to create Key,Certificate and CSR:
 
 ## Curl cmd for handshake
     > curl -v --key private.key --pass abcd123 https://localhost:443/hello
+    > curl -iv --cacert localcrt.crt https://localhost:443/hello
 
 
 ## Generating Root Certificates
